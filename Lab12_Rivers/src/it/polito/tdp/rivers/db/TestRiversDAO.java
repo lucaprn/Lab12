@@ -1,5 +1,6 @@
 package it.polito.tdp.rivers.db;
 
+import it.polito.tdp.rivers.model.FlowIDMap;
 import it.polito.tdp.rivers.model.Model;
 import it.polito.tdp.rivers.model.River;
 import it.polito.tdp.rivers.model.RiversIDMap;
@@ -8,6 +9,7 @@ public class TestRiversDAO {
 
 	public static void main(String[] args) {
 		RiversIDMap map = new RiversIDMap();
+		FlowIDMap mapf = new FlowIDMap();
 		RiversDAO dao = new RiversDAO();
 		System.out.println(dao.getAllRivers(map));
 		
@@ -19,6 +21,8 @@ public class TestRiversDAO {
 		System.out.println(" Misurazioni : "+dao.getNmisurazioni(r));
 		
 		System.out.println(" Media : "+dao.getMedia(r));
+		
+		System.out.println(dao.getAllFlussi(r, mapf, map));
 		
 	}
 

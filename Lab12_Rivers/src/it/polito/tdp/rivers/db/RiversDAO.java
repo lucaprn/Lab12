@@ -1,8 +1,11 @@
 package it.polito.tdp.rivers.db;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import it.polito.tdp.rivers.model.Flow;
+import it.polito.tdp.rivers.model.FlowIDMap;
 import it.polito.tdp.rivers.model.River;
 import it.polito.tdp.rivers.model.RiversIDMap;
 
@@ -10,6 +13,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 public class RiversDAO {
 
@@ -120,6 +124,35 @@ public double getMedia(River r) {
 
 		return media;
 	}
+
+public List<Flow> getAllFlussi(River r, FlowIDMap flowMap, RiversIDMap riverMap) {
+	
+	final String sql = "SELECT f.id, f.day, f.flow, f.river, r.id, r.name\n" + 
+			"from flow as f, river as r\n" + 
+			"where f.river = ? AND f.river=r.id\n" + 
+			"order by f.day";
+	
+	List<Flow> result = new ArrayList<>();
+
+	try {
+		Connection conn = DBConnect.getConnection();
+		PreparedStatement st = conn.prepareStatement(sql);
+		st.setInt(1, r.getId());
+		ResultSet res = st.executeQuery();
+
+		while (res.next()) {
+			Flow f = new Flow(res.getInt("f.id") ,res.getDate("f.day").toLocalDate(), res.getDouble("f.flow"),riverMap.get(new River(res.getInt("r.id"),res.getString("r.name"))));
+			result.add(flowMap.get(f));
+		}
+
+		conn.close();
+		
+	} catch (SQLException e) {
+		//e.printStackTrace();
+		throw new RuntimeException("SQL Error");
+	}
+	return result;
+}
 	
 	
 	

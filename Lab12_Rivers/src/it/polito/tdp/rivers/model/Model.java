@@ -12,6 +12,7 @@ public class Model {
 	private FlowIDMap flowMap;
 	private RiversDAO dao;
 	private List<River> rivers;
+	private List<Flow> flussi;
 	
 	
 	public Model() {
@@ -35,6 +36,11 @@ public class Model {
 	
 	public double getMedie(River r) {
 		return dao.getMedia(r);
+	}
+	
+	public List<Flow> getFlussi(River r) {
+		this.flussi=new ArrayList<>(dao.getAllFlussi(r,this.flowMap,this.riverMap));
+		return flussi;
 	}
 
 }
