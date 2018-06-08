@@ -16,19 +16,18 @@ public class Simulatore {
 	private int k; 
 	private double f_medio;
 	private List<Flow> flussi;
-	private List<StatoBacino> lista = new ArrayList<>();
+	//private List<StatoBacino> lista = new ArrayList<>();
 	
+	//parametri di simulazione
+	private double qMedio;
+	private int tracimazioni;
+	private int noFlussoMinimo;
+	private int normaleServizio;
 	
-	public void run(List<Flow> flows, int k, double flussoMedio) {
-		this.k=k;
-		this.f_medio=flussoMedio;
-		flussi=new ArrayList<>(flows);
-		this.simula();
-	}
-
-	//inizializzazione
-	public void simula() {
-		
+		public void simula() {
+			
+		int sommaQ=0;
+			
 		//flusso minimo
 		f_min=0.8*f_medio;
 				
@@ -40,30 +39,72 @@ public class Simulatore {
 		//queue
 		
 		for(Flow s : this.flussi) {
-			Double entrata; 
-			Double uscita = f_min;
+			Double entrata = s.getFlow(); 
+			Double uscita;
 			Double Prob = Math.random();
-			if(Math.random()<=Prob) {
-				entrata = f_min*10;
+			
+			if(Prob<=0.05) {
+				uscita = f_min*10;
 			}else {
-				entrata = f_medio;
-			}
-			C+=(entrata-uscita);
-			if(C>Q) {
-				
-			}else if(C<0) {
-				
-			}else {
-				
+				uscita=f_min;
 			}
 			
+			double quantitaAcqua = (entrata-uscita)*60*60*24;
 			
+			if(C+quantitaAcqua>Q) {
+				C=Q;
+				tracimazioni++;
+		
+			}else if(C+quantitaAcqua<0) {
+				C=0;
+				noFlussoMinimo++;
+			} else {
+				C+=quantitaAcqua;
+				normaleServizio++;
+			}
 			
-			
+			sommaQ+=C;
 		}
-
+		qMedio=sommaQ/this.flussi.size();
 		
 	}
+
+		
+		public void run(List<Flow> flows, int k, double flussoMedio) {
+			noFlussoMinimo=0;
+			tracimazioni=0;
+			this.k=k;
+			this.f_medio=flussoMedio;
+			flussi=new ArrayList<>(flows);
+			this.simula();
+		}
+
+
+
+		public int getTracimazioni() {
+			return tracimazioni;
+		}
+
+
+
+		public int getNoFlussoMinimo() {
+			return noFlussoMinimo;
+		}
+
+
+
+		public double getqMedio() {
+			return qMedio;
+		}
+
+
+		public int getNormaleServizio() {
+			return normaleServizio;
+		}
+		
+		
+		
+		
 	
 
 }
