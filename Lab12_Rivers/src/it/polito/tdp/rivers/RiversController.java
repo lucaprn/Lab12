@@ -7,8 +7,12 @@ package it.polito.tdp.rivers;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import com.sun.corba.se.impl.naming.cosnaming.InternalBindingKey;
+import com.sun.corba.se.spi.orbutil.fsm.Guard.Result;
+
 import it.polito.tdp.rivers.db.CoppiaMisurazioni;
 import it.polito.tdp.rivers.model.Model;
+import it.polito.tdp.rivers.model.ResultSimulation;
 import it.polito.tdp.rivers.model.River;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -76,6 +80,34 @@ public class RiversController {
     
     @FXML
     void OnSimula(ActionEvent event) {
+    	txtResult.clear();
+    	River r = this.boxRiver.getValue();
+    	String sk = this.txtK.getText();
+    	
+    	try {
+    		
+    		int k = Integer.parseInt(sk);
+    		
+    		if(r==null) {
+    			txtResult.setText("Errore: Seleziona un fiume per la simulazione!");
+    			return;
+    		}
+    		if(k<=0) {
+    			txtResult.setText("Errore: Seleziona un fattore di dimensionamento corretto!");
+    			return;
+    		}
+  
+    		
+    		ResultSimulation rs =model.runSimulazione(k, r);
+    		
+    		txtResult.setText(String.format("Numero di normale servizio : %d\nNumero di mancato servizio : %d\n", rs.getNormaleServizio(),rs.getNumeroNoServizio()));
+    		
+    		
+    	}catch(Exception e) {
+    		e.printStackTrace();
+    		return;
+    	}
+    	
 
     }
 

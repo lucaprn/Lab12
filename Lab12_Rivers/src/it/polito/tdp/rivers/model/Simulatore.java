@@ -32,7 +32,7 @@ public class Simulatore {
 		f_min=0.8*f_medio;
 				
 		//capienza totale bacino
-		Q=k*f_medio*30;
+		Q=k*f_medio*3600*24*30;
 				
 		//occupazione iniziale
 		C=Q/2;

@@ -6,19 +6,18 @@ public class TestModel {
 
 	public static void main(String[] args) {
 		Model model = new Model();
-	
-		List<Flow> result = model.getFlussi(new River(2));
-		River river = new River(2);
+	River river = new River(4);
+		List<Flow> result = model.getFlussi(river);
+		
 		
 //		for(Flow f : result) {
 //			System.out.println(f);
 //		}
 //		
-		ResultSimulation resultSimulation = model.runSimulazione(4, river);
+		ResultSimulation resultSimulation = model.runSimulazione(12, river);
 		System.out.println("\n--------risultato simulazione---------\n");
-		System.out.println("Numero di giorni di normale servizio : "+resultSimulation.getNormaleServizio());
-		System.out.println("Numero di giorni di mancato servizio : "+resultSimulation.getNumeroNoServizio());
-		System.out.println("Numero di giorni di strabordamenti : "+resultSimulation.getNumeroStrabordi());
+		System.out.println("Giorni soddisfacimento fabbisogno : "+resultSimulation.getNormaleServizio()+resultSimulation.getNumeroStrabordi());
+		System.out.println("Giorni di mancato servizio : "+resultSimulation.getNumeroNoServizio());
 		System.out.println("Quantita di acqua media bacino : "+resultSimulation.getqMedia());
 
 	}
