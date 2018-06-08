@@ -15,7 +15,7 @@ public class TestModel {
 //		}
 //		
 		ResultSimulation resultSimulation = model.runSimulazione(12, river);
-		System.out.println("\n--------risultato simulazione---------\n");
+		System.out.println("\n-------risultato simulazione--------\n");
 		System.out.println("Giorni soddisfacimento fabbisogno : "+resultSimulation.getNormaleServizio()+resultSimulation.getNumeroStrabordi());
 		System.out.println("Giorni di mancato servizio : "+resultSimulation.getNumeroNoServizio());
 		System.out.println("Quantita di acqua media bacino : "+resultSimulation.getqMedia());
